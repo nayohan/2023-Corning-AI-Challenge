@@ -1,15 +1,20 @@
 from typing import List
 
 from langchain.schema import Document
-from langchain.document_loaders import ArxivLoader
+from langchain.document_loaders import ArxivLoader, PyPDFLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 
 
 def get_arxiv_docs(paper_topic_query, num_docs=10) -> List[Document]:
-    loader = ArxivLoader(
-        paper_topic_query,
-        load_max_docs=num_docs,
-        load_all_available_meta=True
+    # loader = ArxivLoader(
+    #     paper_topic_query,
+    #     load_max_docs=num_docs,
+    #     load_all_available_meta=True
+    # )
+    loader = PyPDFLoader(
+        '/Users/myeongsoohan/corning/ArXivChatGuru/app/qna/2104.08821.pdf',
+        # load_max_docs=num_docs,
+        # load_all_available_meta=True
     )
     raw_documents = loader.load()
     text_splitter = RecursiveCharacterTextSplitter(

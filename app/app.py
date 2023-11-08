@@ -11,14 +11,15 @@ if os.environ.get("QNA_DEBUG") == "true":
     langchain.debug = True
 
 from qna.llm import make_qna_chain, get_llm
-from qna.db import get_cache, get_vectorstore
+# from qna.db import get_cache, get_vectorstore
+from qna.db import get_vectorstore
 from qna.prompt import basic_prompt
 from qna.data import get_arxiv_docs
-from qna.constants import REDIS_URL
+# from qna.constants import REDIS_URL
 
-@st.cache_resource
-def fetch_llm_cache():
-    return get_cache()
+# @st.cache_resource
+# def fetch_llm_cache():
+#     return get_cache()
 
 @st.cache_resource
 def create_arxiv_index(topic_query, _num_papers, _prompt):
@@ -39,10 +40,10 @@ def reset_app():
     st.session_state['messages'].clear()
 
     arxiv_db = st.session_state['arxiv_db']
-    if arxiv_db is not None:
-        clear_cache()
-        arxiv_db.drop_index(arxiv_db.index_name, delete_documents=True, redis_url=REDIS_URL)
-        st.session_state['arxiv_db'] = None
+    # if arxiv_db is not None:
+        # clear_cache()
+        # arxiv_db.drop_index(arxiv_db.index_name, delete_documents=True, redis_url=REDIS_URL)
+        # st.session_state['arxiv_db'] = None
 
 
 def clear_cache():
@@ -54,7 +55,7 @@ def clear_cache():
 
 
 try:
-    langchain.llm_cache = fetch_llm_cache()
+    # langchain.llm_cache = fetch_llm_cache()
     prompt = basic_prompt()
 
     # Defining default values
@@ -105,7 +106,7 @@ try:
         topic = st.text_input("Topic Area", key="arxiv_topic")
         papers = st.number_input("Number of Papers", key="num_papers", value=10, min_value=1, max_value=50, step=2)
     with col2:
-        st.image("./assets/arxivguru_crop.png")
+        st.image("/Users/myeongsoohan/corning/ArXivChatGuru/app/assets/arxivguru_crop.png")
 
 
 
@@ -142,22 +143,28 @@ try:
         with st.chat_message("user"):
             st.markdown(query)
 
-        with st.chat_message("assistant", avatar="./assets/arxivguru_crop.png"):
+        with st.chat_message("assistant", avatar="/Users/myeongsoohan/corning/ArXivChatGuru/app/assets/arxivguru_crop.png"):
             message_placeholder = st.empty()
             st.session_state['context'], st.session_state['response'] = [], ""
             chain = st.session_state['chain']
+            # from time import sleep
+            # sleep(3)
 
+            # result = chain({"question": query, 'input_documents': arxiv_db})
             result = chain({"query": query})
+            
             st.markdown(result["result"])
+            # st.markdown(result)
             st.session_state['context'], st.session_state['response'] = result['source_documents'], result['result']
+            # st.session_state['context'], st.session_state['response'] = result, result
             if st.session_state['context']:
                 with st.expander("Context"):
                     context = defaultdict(list)
                     for doc in st.session_state['context']:
-                        context[doc.metadata['Title']].append(doc)
+                        context[doc.metadata['source']].append(doc)
                     for i, doc_tuple in enumerate(context.items(), 1):
-                        title, doc_list = doc_tuple[0], doc_tuple[1]
-                        st.write(f"{i}. **{title}**")
+                        source, doc_list = doc_tuple[0], doc_tuple[1]
+                        st.write(f"{i}. **{source}**")
                         for context_num, doc in enumerate(doc_list, 1):
                             st.write(f" - **Context {context_num}**: {doc.page_content}")
 
@@ -172,3 +179,4 @@ except URLError as e:
         """
         % e.reason
     )
+
