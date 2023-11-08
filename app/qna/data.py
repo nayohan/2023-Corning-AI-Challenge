@@ -12,7 +12,7 @@ def get_arxiv_docs(paper_topic_query, num_docs=10) -> List[Document]:
     #     load_all_available_meta=True
     # )
     loader = PyPDFLoader(
-        '/Users/myeongsoohan/corning/ArXivChatGuru/app/qna/2104.08821.pdf',
+        'qna/SimCSE.pdf',
         # load_max_docs=num_docs,
         # load_all_available_meta=True
     )
