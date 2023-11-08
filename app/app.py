@@ -106,7 +106,7 @@ try:
         topic = st.text_input("Topic Area", key="arxiv_topic")
         papers = st.number_input("Number of Papers", key="num_papers", value=10, min_value=1, max_value=50, step=2)
     with col2:
-        st.image("/Users/myeongsoohan/corning/ArXivChatGuru/app/assets/arxivguru_crop.png")
+        st.image("./assets/arxivguru_crop.png")
 
 
 
@@ -143,7 +143,7 @@ try:
         with st.chat_message("user"):
             st.markdown(query)
 
-        with st.chat_message("assistant", avatar="/Users/myeongsoohan/corning/ArXivChatGuru/app/assets/arxivguru_crop.png"):
+        with st.chat_message("assistant", avatar="./assets/arxivguru_crop.png"):
             message_placeholder = st.empty()
             st.session_state['context'], st.session_state['response'] = [], ""
             chain = st.session_state['chain']
