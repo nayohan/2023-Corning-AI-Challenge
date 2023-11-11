@@ -55,13 +55,13 @@ def main(args):
         if args.do_simcse:
             model = SimCSE(args.simcse_model_name_or_path)
         else:
+            model_loader = AutoModel
+            model = model_loader.from_pretrained(args.model_name_or_path)
+            
             if args.gpu_id >= 0:
                 model.cuda(args.gpu_id)
             
             device = next(model.parameters()).device
-
-            model_loader = AutoModel
-            model = model_loader.from_pretrained(args.model_name_or_path)
             
         queries, references = dataset['question'], dataset['references']
         documents = [' '.join(x) for x in references]
