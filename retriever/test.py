@@ -35,12 +35,11 @@ def define_argparser():
 
 def topk_metric(matrix, k=None):
     result = []
-    for c in matrix:
+    for i, c in enumerate(matrix):
         topk = sorted(c, reverse=True)[:k]
         diag = np.diag(matrix)
-        is_topk = any(x in topk for x in np.diag(matrix))
+        is_topk = diag[i] in topk
         result.append(0 if is_topk else 1) # 정답이면 0 아니면 1
-    
     return result
 
 def main(args):
@@ -72,7 +71,6 @@ def main(args):
         if args.do_simcse:
             output_q = model.encode(queries)
             output_d = model.encode(documents)
-        
         else:
             model.eval()
             encoding_q = tokenizer(queries, 
@@ -107,7 +105,7 @@ def main(args):
         
         result_lst = topk_metric(cos_sim.cpu().detach().numpy(), k=args.top_k)
         acc = result_lst.count(0) / len(result_lst) * 100
-        print(acc)
+        print(f'{acc}%')
 
 if __name__ == '__main__':
     args = define_argparser()
