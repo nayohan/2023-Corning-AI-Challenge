@@ -1,8 +1,11 @@
 from typing import List
 
 from langchain.schema import Document
-from langchain.document_loaders import ArxivLoader, PyPDFLoader
+from langchain.document_loaders import ArxivLoader, PyPDFLoader, DirectoryLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
+import os
+
+file_list = os.listdir("/home/dilab/jam/rag2/ClosedAI/app/PaperDB")
 
 
 def get_arxiv_docs(paper_topic_query, num_docs=10) -> List[Document]:
@@ -11,9 +14,9 @@ def get_arxiv_docs(paper_topic_query, num_docs=10) -> List[Document]:
     #     load_max_docs=num_docs,
     #     load_all_available_meta=True
     # )
-    loader = PyPDFLoader(
-        'PaperDB/SimCSE.pdf',
-        # load_max_docs=num_docs,
+    loader = DirectoryLoader(
+        "PaperDB/", glob="./*.pdf", loader_cls=PyPDFLoader,
+        # load_max_docs=len(file_list),
         # load_all_available_meta=True
     )
     raw_documents = loader.load()
