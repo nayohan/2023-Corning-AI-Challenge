@@ -1,0 +1,1 @@
+python inference_generator.py -m gpt2 -f prompt.tsv -o generate2.tsv
