@@ -8,7 +8,6 @@ python test.py \
     --top_k 1 \
     --use_fast_tokenizer
 
-
 # python test.py \
 #     --model_name_or_path bert-base-uncased \
 #     --simcse_model_name_or_path "princeton-nlp/sup-simcse-bert-base-uncased"\
