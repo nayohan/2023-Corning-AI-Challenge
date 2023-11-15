@@ -44,7 +44,7 @@ def topk_metric(matrix, k=None):
 def main(args):
     dataset = load_dataset(args.evaluation_file)[args.data_type]
     print(
-        'Number of {}:'.format(args.data_type), len(dataset),
+        'Number of {}: {}'.format(args.data_type, len(dataset)),
         '\nModel:', args.model_name_or_path,
         )
     with torch.no_grad():
