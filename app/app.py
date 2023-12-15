@@ -26,6 +26,14 @@ def create_arxiv_index(topic_query, _num_papers, _prompt):
     arxiv_documents = get_arxiv_docs(topic_query, _num_papers)
     arxiv_db = get_vectorstore(arxiv_documents)
     st.session_state['arxiv_db'] = arxiv_db
+    len_doc = []
+    for i in range(len(arxiv_documents)):
+        len_doc.append(arxiv_documents[i].metadata['source'])
+    # print("len!!!!!!!!!!", len(len_doc))
+        
+    st.session_state['doc_path'] = len_doc
+        # print("!!!!!!!!!",arxiv_documents[0].metadata['source'])
+    # st.session_state['doc_path'] = arxiv_documents[0].metadata['source']
     return arxiv_db
 
 def is_updated(topic):
@@ -101,12 +109,13 @@ try:
 
     col1, col2 = st.columns(2)
     with col1:
-        st.title("Arxiv ChatGuru")
+        st.title("CorningAI")
+        st.write("**")
         st.write("**Put in a topic area and a question within that area to get an answer!**")
         topic = st.text_input("Topic Area", key="arxiv_topic")
         papers = st.number_input("Number of Papers", key="num_papers", value=10, min_value=1, max_value=50, step=2)
     with col2:
-        st.image("./assets/arxivguru_crop.png")
+        st.image("./assets/logo-glass-bg.png")
 
 
 
@@ -115,6 +124,18 @@ try:
             st.session_state['previous_topic'] = topic
             with st.spinner("Loading information from Arxiv to answer your question..."):
                 create_arxiv_index(st.session_state['arxiv_topic'], st.session_state['num_papers'], prompt)
+                st.session_state["find_doc"] = False
+    
+    if st.button("Top-K!"):
+        if is_updated(topic):
+            st.session_state['previous_topic'] = topic
+            with st.spinner("Loading information from Arxiv to answer your question..."):
+                create_arxiv_index(st.session_state['arxiv_topic'], st.session_state['num_papers'], prompt)
+                st.session_state["find_doc"] = True
+
+
+    
+
 
     arxiv_db = st.session_state['arxiv_db']
     if st.session_state["llm"] is None:
@@ -143,32 +164,50 @@ try:
         with st.chat_message("user"):
             st.markdown(query)
 
-        with st.chat_message("assistant", avatar="./assets/arxivguru_crop.png"):
+        if st.session_state['find_doc'] == False:
+            with st.chat_message("assistant", avatar="./assets/logo-glass-bg.png"):
+                message_placeholder = st.empty()
+                st.session_state['context'], st.session_state['response'] = [], ""
+                chain = st.session_state['chain']
+                # from time import sleep
+                # sleep(3)
+
+                # result = chain({"question": query, 'input_documents': arxiv_db})
+                result = chain({"query": query})
+                
+                st.markdown(result["result"])
+                # st.markdown(result)
+                st.session_state['context'], st.session_state['response'] = result['source_documents'], result['result']
+                # st.session_state['context'], st.session_state['response'] = result, result
+                if st.session_state['context']:
+                    with st.expander("Context"):
+                        context = defaultdict(list)
+                        for doc in st.session_state['context']:
+                            context[doc.metadata['source']].append(doc)
+                        for i, doc_tuple in enumerate(context.items(), 1):
+                            source, doc_list = doc_tuple[0], doc_tuple[1]
+                            st.write(f"{i}. **{source}**")
+                            for context_num, doc in enumerate(doc_list, 1):
+                                st.write(f" - **Context {context_num}**: {doc.page_content}")
+
+                st.session_state.messages.append({"role": "assistant", "content": st.session_state['response']})
+        else:
             message_placeholder = st.empty()
             st.session_state['context'], st.session_state['response'] = [], ""
             chain = st.session_state['chain']
-            # from time import sleep
-            # sleep(3)
-
-            # result = chain({"question": query, 'input_documents': arxiv_db})
             result = chain({"query": query})
-            
-            st.markdown(result["result"])
-            # st.markdown(result)
             st.session_state['context'], st.session_state['response'] = result['source_documents'], result['result']
-            # st.session_state['context'], st.session_state['response'] = result, result
             if st.session_state['context']:
-                with st.expander("Context"):
-                    context = defaultdict(list)
-                    for doc in st.session_state['context']:
-                        context[doc.metadata['source']].append(doc)
-                    for i, doc_tuple in enumerate(context.items(), 1):
-                        source, doc_list = doc_tuple[0], doc_tuple[1]
-                        st.write(f"{i}. **{source}**")
-                        for context_num, doc in enumerate(doc_list, 1):
-                            st.write(f" - **Context {context_num}**: {doc.page_content}")
+                    with st.expander("Context"):
+                        context = defaultdict(list)
+                        for doc in st.session_state['context']:
+                            context[doc.metadata['source']].append(doc)
+                        for i, doc_tuple in enumerate(context.items(), 1):
+                            source, doc_list = doc_tuple[0], doc_tuple[1]
+                            for i in range(len(doc_list)):
+                                st.write(f"{i}. **{doc_list[i].metadata['source'], doc_list[i].metadata['page']}**")
+                            
 
-            st.session_state.messages.append({"role": "assistant", "content": st.session_state['response']})
 
 
 except URLError as e:
