@@ -1,3 +1,5 @@
+--find-links https://download.pytorch.org/whl/torch_stable.html
+torch==1.13.1+cu116
 redis
 streamlit
 python-dotenv
@@ -10,4 +12,10 @@ openai
 tiktoken
 arxiv
 pymupdf
-redisvl
+pypdf==3.17.2
+chromadb==0.4.15
+transformers==4.35.0
+datasets==2.14.6
+deepspeed==0.11.1
+accelerate==0.24.1
+optimum==1.14.1
