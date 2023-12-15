@@ -1,2 +1,5 @@
 .chroma
 __pycache__
+dataset_gen
+
+*.pyc
