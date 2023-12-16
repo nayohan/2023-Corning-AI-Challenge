@@ -126,7 +126,7 @@ try:
                 create_arxiv_index(st.session_state['arxiv_topic'], st.session_state['num_papers'], prompt)
                 st.session_state["find_doc"] = False
     
-    if st.button("Top-K!"):
+    if st.button("Paper_list"):
         if is_updated(topic):
             st.session_state['previous_topic'] = topic
             with st.spinner("Loading information from Arxiv to answer your question..."):
@@ -188,7 +188,7 @@ try:
                             source, doc_list = doc_tuple[0], doc_tuple[1]
                             st.write(f"{i}. **{source}**")
                             for context_num, doc in enumerate(doc_list, 1):
-                                st.write(f" - **Context {context_num}**: {doc.page_content}")
+                                st.write(f"{i}. - **Context {context_num}**: {doc.page_content}")
 
                 st.session_state.messages.append({"role": "assistant", "content": st.session_state['response']})
         else:

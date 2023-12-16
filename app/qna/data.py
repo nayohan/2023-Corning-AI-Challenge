@@ -5,8 +5,7 @@ from langchain.document_loaders import ArxivLoader, PyPDFLoader, DirectoryLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 import os
 
-file_list = os.listdir("/home/dilab/jam/rag2/ClosedAI/app/PaperDB")
-
+file_list = os.listdir("./PaperDB")
 
 def get_arxiv_docs(paper_topic_query, num_docs=10) -> List[Document]:
     # loader = ArxivLoader(
@@ -22,10 +21,11 @@ def get_arxiv_docs(paper_topic_query, num_docs=10) -> List[Document]:
     raw_documents = loader.load()
     text_splitter = RecursiveCharacterTextSplitter(
     # Set a really small chunk size, just to show.
-    chunk_size = 500,
-    chunk_overlap  = 20,
+    chunk_size = 1000,
+    chunk_overlap  = 0,
     length_function = len,
     add_start_index = True,
     )
     documents = text_splitter.split_documents(raw_documents)
     return documents
+

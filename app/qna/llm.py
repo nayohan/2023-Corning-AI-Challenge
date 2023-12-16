@@ -1,12 +1,13 @@
 import os
 from typing import List, TYPE_CHECKING
-
+import torch
 from langchain.chains import RetrievalQA
 from langchain.chat_models import ChatOpenAI,ChatOllama
 from langchain.llms.base import LLM
 from langchain.embeddings.base import Embeddings
 from langchain.llms import HuggingFaceHub
-
+from langchain.llms.huggingface_pipeline import HuggingFacePipeline
+from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline
 
 from langchain.chains.question_answering import load_qa_chain
 from langchain.embeddings import OpenAIEmbeddings, HuggingFaceEmbeddings
@@ -19,27 +20,28 @@ from langchain.embeddings import OpenAIEmbeddings, HuggingFaceEmbeddings
 if TYPE_CHECKING:
     from langchain.vectorstores import Chroma
 
-from langchain.llms import HuggingFaceHub
+from langchain.llms import HuggingFaceHub, HuggingFacePipeline
 from langchain.prompts import PromptTemplate
 from langchain import LLMChain
-# repo_id = "beomi/llama-2-ko-7b"
+import transformers
 
 def get_llm(max_tokens=100) -> LLM:
     # llm = ChatOpenAI(model_name=OPENAI_COMPLETIONS_ENGINE, max_tokens=max_tokens)
     # llm = HuggingFaceHub(model_name="meta-llama/Llama-2-7b-chat-hf", max_tokens=max_tokens)
-    repo_id = 'mistralai/Mistral-7B-v0.1'
-    llm = HuggingFaceHub(
-    repo_id=repo_id, 
-    model_kwargs={"temperature": 0.2, 
-                  "max_length": 128},
-    huggingfacehub_api_token="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"
-)
-    return llm
+    model_id = "nayohan/closedai-llm"
+    # model_id = "mistralai/Mistral-7B-v0.1"
+    # model_id = "gpt2"
+    tokenizer = AutoTokenizer.from_pretrained(model_id)
+    # model = AutoModelForCausalLM.from_pretrained(model_id,device_map="auto", torch_dtype=torch.bfloat16)
+    model = AutoModelForCausalLM.from_pretrained(model_id,device_map="auto")
+    pipe = pipeline("text-generation", model=model, tokenizer=tokenizer, max_new_tokens=128)
+    hf = HuggingFacePipeline(pipeline=pipe)
+    return hf
 
 
 def get_embeddings() -> Embeddings:
     # embeddings = OpenAIEmbeddings(model_name=OPENAI_EMBEDDINGS_ENGINE)
-    embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
+    embeddings = HuggingFaceEmbeddings(model_name="BAAI/bge-base-en-v1.5")
     return embeddings
 
 
