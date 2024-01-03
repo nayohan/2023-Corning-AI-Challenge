@@ -3,7 +3,7 @@
     <a href="https://github.com/CrayLabs/SmartSim"><img src="./app/assets/logo-glass-bg.png" width="30%"><img></a>
 </div>
 
-# Corning AI : Mulit-turn 대화가 가능한 대화 챗봇 📖
+# Corning AI : Muliti-turn 대화가 가능한 대화 챗봇 📖
 
 Welcome to **ClosedAI-chatbot**. 해당 툴은 LangChain과 ChromaDB를 활용하여 다양한 document를 활용한여 대화를 가능하게 합니다. 이 접근 방식을 통해 연구에 접근하고 이해하는 것을 더 쉽고 매력적으로 만드는 것뿐만 아니라 RAG(Retrieval Augmented Generation) 시스템의 작동 방식에 대해서도 가르치는 것을 목표로 합니다.
 
