@@ -86,7 +86,7 @@ Welcome to **ClosedAI-chatbot**. 해당 툴은 LangChain과 ChromaDB를 활용�
 1. 시작 페이지
     - 토픽 주제에 대해 먼저 입력합니다.
     - 해당 토픽 주제를 정함으로써 embedding vector의 search 속도를 줄여줍니다.
-    ![ref arch](app/assets/start.jpg)
+    ![ref arch](app/assets/interface.png)
 
 2. 대화 페이지
     - **Chat!** 버튼을 누르면 대화를 할 수 있는 interface 가 생성됩니다. 
