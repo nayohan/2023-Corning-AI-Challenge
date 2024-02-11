@@ -5,14 +5,13 @@
 
 # Corning AI : Multi-turn 대화가 가능한 대화 챗봇 📖
 
-Welcome to **ClosedAI-chatbot**. 해당 repo는 LangChain과 ChromaDB를 활용하여 대화를 가능하게 합니다. 
+해당 repo는 LangChain과 ChromaDB를 활용하여 대화를 가능하게 합니다. 
 
 ## 📖 How it Works
 
-아래 그림은 **"ClosedAI-chatbot"** 가 작동하는 과정을 보여줍니다. 사용자는 질문하고자하는 대화를 입력합니다. 사용자 질의와 관련한 논문들은 더 작은 크기로 청킹(chunking)되어 임베딩으로 생성되어 ChromaDB에 저장됩니다. ClosedAI-chatbot은 사용자의 질의에 대해 관련 문서를 기반으로 답변을 반환합니다.
+아래 그림은 **"ClosedAI-chatbot"**가 작동하는 과정을 보여줍니다. 사용자 질의와 관련한 문서들은 청킹(chunking)되어 ChromaDB에 임베딩 형태로 저장됩니다. ClosedAI-chatbot은 사용자의 질의에 대해 관련 문서를 기반으로 답변을 반환합니다.
 
 ![ref arch](app/assets/lanchain.webp)
-
 
 ## 🛠 Components
 
@@ -21,14 +20,14 @@ Welcome to **ClosedAI-chatbot**. 해당 repo는 LangChain과 ChromaDB를 활용�
 3. **ChromaDB**: RAG를 위한 효율적인 벡터 저장, 인덱싱 및 검색을 시연합니다.
 4. **RetrievalQA**: LangChain의 Retrieval QA 및 Local LLM을 기반으로 사용자는 제출한 주제별로 검색된 논문에 대한 쿼리를 작성할 수 있습니다.
     
-    1) Retrieval 모델
+    (1) Retrieval 모델
        - 문서 임베딩을 위한 모델 : "BAAI/bge-base-en-v1.5"
 
             아래와 같은 흐름으로 Retrieval 모델을 활용하여 문서를 임베딩합니다.
         ![ref arch](app/assets/chunk.webp)
        ![ref arch](app/assets/fe2a8d84-2d2e-4e0f-b5a2-24e7b0bf33c7_image.webp)
         
-    2) LLM 모델
+    (2) LLM 모델
        - 화학 도메인에 학습한 LLM 모델 : "nayohan/corningQA-llama2-13b-chat"
        - 학습의 전체 프레임워크는 다음과 같습니다.
 
@@ -39,8 +38,6 @@ Welcome to **ClosedAI-chatbot**. 해당 repo는 LangChain과 ChromaDB를 활용�
         <p align="center"><img width="500" alt="image" src="app/assets/multi_turn.png">
 
 5. **Python Libraries**: Making use of tools such as [`ChromaDB`], [`Langchain`](https://www.langchain.com/), [`Streamlit`](https://streamlit.io/), etc
-
-
 
 ### Run Locally
 
