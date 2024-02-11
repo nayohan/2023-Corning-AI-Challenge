@@ -5,11 +5,11 @@
 
 # Corning AI : Multi-turn 대화가 가능한 대화 챗봇 📖
 
-Welcome to **ClosedAI-chatbot**. 해당 툴은 LangChain과 ChromaDB를 활용하여 다양한 document를 활용한여 대화를 가능하게 합니다. 이 접근 방식을 통해 연구에 접근하고 이해하는 것을 더 쉽고 매력적으로 만드는 것뿐만 아니라 RAG(Retrieval Augmented Generation) 시스템의 작동 방식에 대해서도 가르치는 것을 목표로 합니다.
+Welcome to **ClosedAI-chatbot**. 해당 repo는 LangChain과 ChromaDB를 활용하여 대화를 가능하게 합니다. 
 
 ## 📖 How it Works
 
-밑의 그림은 **"ClosedAI-chatbot"** 가 작동하는 과정을 보여줍니다. 사용자는 대화하고자하는 주제를 입력하고, 해당 주제를 기반으로 논문을 검색합니다. 그런 다음 이 논문들은 더 작은 부분으로 청크되어 임베딩이 생성됩니다. 이러한 임베딩은 벡터 데이터베이스로 사용되는 ChromaDB에 저장됩니다. 그러면 사용자는 제출한 주제에 관련하여 검색된 논문에 대해 대화할 수 있고, 챗봇은 가장 관련성이 높은 답변을 반환합니다
+아래 그림은 **"ClosedAI-chatbot"** 가 작동하는 과정을 보여줍니다. 사용자는 대화하고자 하는 주제를 입력하고, 해당 주제를 기반으로 논문을 검색합니다. 그런 다음 이 논문들은 더 작은 부분으로 청크되어 임베딩이 생성됩니다. 이러한 임베딩은 벡터 데이터베이스로 사용되는 ChromaDB에 저장됩니다. 그러면 사용자는 제출한 주제에 관련하여 검색된 논문에 대해 대화할 수 있고, 챗봇은 가장 관련성이 높은 답변을 반환합니다.
 
 ![ref arch](app/assets/lanchain.webp)
 
