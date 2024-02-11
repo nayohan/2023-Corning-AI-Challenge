@@ -87,6 +87,10 @@ Welcome to **ClosedAI-chatbot**. 해당 repo는 LangChain과 ChromaDB를 활용�
    <p align="center"><img width="600" alt="image" src="app/assets/interface1.png">
 
 4. 멀티 턴 대화 예시
-
+    - 연속적인 대화가 가능합니다.
    <p align="center"><img width="600" alt="image" src="app/assets/interface2.png">
 
+### Reference
+- https://github.com/RedisVentures/ArXivChatGuru
+- https://github.com/corning-ai-challenge/intro
+- https://github.com/corning-ai-challenge/item1
