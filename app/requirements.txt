@@ -13,9 +13,12 @@ tiktoken
 arxiv
 pymupdf
 pypdf==3.17.2
-chromadb==0.4.15
+chromadb==0.3.29
 transformers==4.35.0
 datasets==2.14.6
 deepspeed==0.11.1
 accelerate==0.24.1
 optimum==1.14.1
+
+#retriever
+

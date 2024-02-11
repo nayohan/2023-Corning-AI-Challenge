@@ -15,6 +15,7 @@ INDEX=0
 MASTER_ADDR="127.0.0.1"
 MASTER_PORT=12321
 GPU_NUM_PER_NODE=1
+RAYGPUS=1
 
 MAXLEN=2048
 EPOCH=2
@@ -32,17 +33,7 @@ models="kollama-13b"
 for model in "${models[@]}"
     do
     raw_model_path=${maindir}pretrained_model/${model}/
-    case ${model} in 
-        "t5-11b"|"llama-13b"|"llama-33b"|"kollama-13b")
-            RAYGPUS=1
-            ;;
-        "t5-small"|"t5-base"|"t5-large"|"t5-3b"|\
-        "flan-t5-small"|"flan-t5-base"|"flan-t5-large"|"flan-t5-3b"|\
-        "llama-7b")
-            RAYGPUS=1
-            ;;
-    esac
-    
+
     # tuning
     for task in "${tasks[@]}"
         do

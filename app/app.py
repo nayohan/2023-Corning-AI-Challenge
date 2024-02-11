@@ -53,15 +53,13 @@ def reset_app():
         # arxiv_db.drop_index(arxiv_db.index_name, delete_documents=True, redis_url=REDIS_URL)
         # st.session_state['arxiv_db'] = None
 
-
 def clear_cache():
     if not st.session_state["llm"]:
         st.warning("Could not find llm to clear cache of")
     llm = st.session_state["llm"]
     llm_string = llm._get_llm_string()
     langchain.llm_cache.clear(llm_string=llm_string)
-
-
+    
 try:
     # langchain.llm_cache = fetch_llm_cache()
     prompt = basic_prompt()
@@ -117,8 +115,6 @@ try:
     with col2:
         st.image("./assets/logo-glass-bg.png")
 
-
-
     if st.button("Chat!"):
         if is_updated(topic):
             st.session_state['previous_topic'] = topic
@@ -132,10 +128,6 @@ try:
             with st.spinner("Loading information from Arxiv to answer your question..."):
                 create_arxiv_index(st.session_state['arxiv_topic'], st.session_state['num_papers'], prompt)
                 st.session_state["find_doc"] = True
-
-
-    
-
 
     arxiv_db = st.session_state['arxiv_db']
     if st.session_state["llm"] is None:
@@ -169,8 +161,6 @@ try:
                 message_placeholder = st.empty()
                 st.session_state['context'], st.session_state['response'] = [], ""
                 chain = st.session_state['chain']
-                # from time import sleep
-                # sleep(3)
 
                 # result = chain({"question": query, 'input_documents': arxiv_db})
                 result = chain({"query": query})
@@ -206,9 +196,6 @@ try:
                             source, doc_list = doc_tuple[0], doc_tuple[1]
                             for i in range(len(doc_list)):
                                 st.write(f"{i}. **{doc_list[i].metadata['source'], doc_list[i].metadata['page']}**")
-                            
-
-
 
 except URLError as e:
     st.error(
