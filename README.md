@@ -9,7 +9,7 @@
 
 ## 📖 How it Works
 
-아래 그림은 **"ClosedAI-chatbot"**가 작동하는 과정을 보여줍니다. 사용자 질의와 관련한 문서들은 청킹(chunking)되어 ChromaDB에 임베딩 형태로 저장됩니다. ClosedAI-chatbot은 사용자의 질의에 대해 관련 문서를 기반으로 답변을 반환합니다.
+아래 그림은 **ClosedAI-chatbot**가 작동하는 과정을 보여줍니다. 사용자 질의와 관련한 문서들은 청킹(chunking)되어 ChromaDB에 임베딩 형태로 저장됩니다. ClosedAI-chatbot은 사용자의 질의에 대해 관련 문서를 기반으로 답변을 반환합니다.
 
 ![ref arch](app/assets/lanchain.webp)
 
