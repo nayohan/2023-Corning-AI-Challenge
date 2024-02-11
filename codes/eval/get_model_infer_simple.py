@@ -1,6 +1,6 @@
 import argparse
 from transformers import AutoTokenizer, AutoModelForCausalLM, AutoModelForSeq2SeqLM
-from optimum.bettertransformer import BetterTransformer
+# from optimum.bettertransformer import BetterTransformer
 import torch
 import os
 import json
@@ -83,7 +83,7 @@ def get_model_answers(model_path, model_id, question_jsons, ray_num_gpus, load_i
         )
 
     # Initialize with BetterTransformer, injecting Flash-Attention
-    model = BetterTransformer.transform(model)
+    # model = BetterTransformer.transform(model)
 
     # turn on eval mode to stop batch normalizarion & dropout, can work together with torch.inference_mode
     model = model.eval()
@@ -100,7 +100,7 @@ def get_model_answers(model_path, model_id, question_jsons, ray_num_gpus, load_i
             target_len = MaxLen#TaskTarLen[task_type]
         else:
             input_ids = tokenizer([qs], max_length=(MaxLen - TarLen), truncation=True, add_special_tokens=False).input_ids
-            target_len = min(len(input_ids[0]) + 512, MaxLen)
+            target_len = min(len(input_ids[0]) + TarLen, MaxLen)
 
         output_ids = model.generate(
             torch.as_tensor(input_ids).cuda(),

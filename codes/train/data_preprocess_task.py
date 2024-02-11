@@ -5,7 +5,7 @@ from dataclasses import dataclass, field
 
 import torch
 from datasets import load_dataset
-from transformers import HfArgumentParser, T5Tokenizer, LlamaTokenizer, set_seed
+from transformers import HfArgumentParser, T5Tokenizer, LlamaTokenizer, set_seed, AutoTokenizer
 
 q_pre = "<s>\n"
 qa_link = "\n"
@@ -57,7 +57,7 @@ def main():
             return src_model_inputs
     else:
         # use truncation_side='left' to preserve linking between end of prompt and target labels
-        tokenizer = LlamaTokenizer.from_pretrained(model_args.model_name_or_path, truncation_side='left')
+        tokenizer = AutoTokenizer.from_pretrained(model_args.model_name_or_path, truncation_side='left', fast=False)
         tokenizer.add_special_tokens({'pad_token': '</s>'})
 
         def preprocess_function(examples):

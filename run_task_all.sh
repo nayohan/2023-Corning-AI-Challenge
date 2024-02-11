@@ -7,32 +7,37 @@ export GLOO_SOCKET_IFNAME=eth0
 
 maindir=$1
 datadir=${maindir}data
-codedir=${maindir}code
+codedir=${maindir}codes
 taskdir=${datadir}/tasks
 
 NODE_NUM=1
 INDEX=0
 MASTER_ADDR="127.0.0.1"
 MASTER_PORT=12321
-GPU_NUM_PER_NODE=1
+GPU_NUM_PER_NODE=4
 RAYGPUS=1
 
 MAXLEN=2048
 EPOCH=2
 # tasks=("DG" "DHG" "DS")
 # tasks=("DocQA")
-tasks="DocQA2"
+tasks="DocQA7_MS"
 # models=("t5-small" "t5-base" "t5-large" "t5-3b")
 # models=("flan-t5-small" "flan-t5-base" "flan-t5-large" "flan-t5-3b")
 # models=("llama-7b" "llama-13b" "llama-33b")
 # models=("t5-small" "t5-base" "t5-large" "flan-t5-small" "flan-t5-base" "flan-t5-large"  "t5-3b"  "flan-t5-3b")
 # models=("llama-7b" "llama-13b")
-models="kollama-13b"
+# models="kollama-13b"
 # models="llama-7b"
+# models=("meta-llama/Llama-2-13b-chat-hf" "upstage/SOLAR-10.7B-v1.0")
+# models=("allenai/OLMo-7B")
+# models=("mistralai/Mixtral-8x7B-Instruct-v0.1") 
+models=("lmsys/vicuna-7b-v1.5" "lmsys/vicuna-13b-v1.5")
 
 for model in "${models[@]}"
     do
-    raw_model_path=${maindir}pretrained_model/${model}/
+    # raw_model_path=${maindir}pretrained_model/${model}/
+    raw_model_path=${model}
 
     # tuning
     for task in "${tasks[@]}"
@@ -40,13 +45,13 @@ for model in "${models[@]}"
         test_data=${taskdir}/${task}/test.jsonl
 
         # zeroshot inference on one node
-        python3 ${codedir}/codes/eval/get_model_infer_simple.py \
-        --model-id ${model}_zeroshot \
-        --model-path ${raw_model_path} \
-        --question-file ${test_data} \
-        --answer-file ${datadir}/instruction_testing/inf_${model}_${task}_zeroshot.jsonl \
-        --num-gpus $GPU_NUM_PER_NODE \
-        --ray-num-gpus ${RAYGPUS}
+        # python3 ${codedir}/eval/get_model_infer_simple.py \
+        # --model-id ${model}_zeroshot \
+        # --model-path ${raw_model_path} \
+        # --question-file ${test_data} \
+        # --answer-file ${datadir}/instruction_testing/inf_${model}_${task}_zeroshot.jsonl \
+        # --num-gpus $GPU_NUM_PER_NODE \
+        # --ray-num-gpus ${RAYGPUS}
 
         case ${model} in 
             "t5-small"|"t5-base"|"t5-large"|\
@@ -60,14 +65,15 @@ for model in "${models[@]}"
                 GRA_ACC=1
                 DS_CONFIG="7b"
                 ;;
-            "llama-7b")
-                PER_GPU_BATCH=8
-                GRA_ACC=2
+            "llama-7b"|"lmsys/vicuna-7b-v1.5"|"allenai/OLMo-7B")
+                PER_GPU_BATCH=2
+                GRA_ACC=8
                 DS_CONFIG="7b"
                 ;;
-            "t5-11b"|"flan-t5-11b"|"llama-13b"|"kollama-13b")
-                PER_GPU_BATCH=4
-                GRA_ACC=4
+            "t5-11b"|"flan-t5-11b"|"meta-llama/Llama-2-13b-chat-hf"|"kollama-13b"|\
+            "upstage/SOLAR-10.7B-v1.0"|"lmsys/vicuna-13b-v1.5"|"mistralai/Mixtral-8x7B-Instruct-v0.1")
+                PER_GPU_BATCH=2
+                GRA_ACC=8
                 DS_CONFIG="13b"
                 ;;
             "llama-33b")
@@ -83,7 +89,7 @@ for model in "${models[@]}"
         deepspeed_config_path=${codedir}/configs/ds_config_${DS_CONFIG}.json
 
         # # # # # train data preprocess
-        python3 ${codedir}/codes/train/data_preprocess_task.py \
+        python3 ${codedir}/train/data_preprocess_task.py \
             --model_name_or_path ${raw_model_path} \
             --data_path ${data_path} \
             --preprocessing_num_workers=1 \
@@ -96,7 +102,7 @@ for model in "${models[@]}"
             --nproc_per_node $GPU_NUM_PER_NODE \
             --master_addr $MASTER_ADDR \
             --master_port $MASTER_PORT \
-            ${codedir}/codes/train/train.py \
+            ${codedir}/train/train.py \
             --model_name_or_path ${raw_model_path} \
             --bf16 True \
             --output_dir ${model_output_path} \
@@ -121,13 +127,13 @@ for model in "${models[@]}"
             --logging_first_step \
             --do_eval \
             --evaluation_strategy='steps' \
-            --eval_steps=10 \
-            --logging_steps=10 \
+            --eval_steps=5 \
+            --logging_steps=5 \
             --max_eval_samples=1000 \
             --run_name="${model}_${task}_e${EPOCH}"
-        
+
         # # # # tuning inference
-        python3 ${codedir}/codes/eval/get_model_infer_simple.py \
+        python3 ${codedir}/eval/get_model_infer_simple.py \
             --model-id ${model}_${task} \
             --model-path ${model_output_path} \
             --question-file ${test_data} \

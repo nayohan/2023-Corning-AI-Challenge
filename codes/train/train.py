@@ -114,13 +114,13 @@ def main():
         config.use_cache=False
         # use truncation_side='left' to preserve linking between end of prompt and target labels
         tokenizer = LlamaTokenizer.from_pretrained(model_args.model_name_or_path, truncation_side='left')
-        tokenizer.add_special_tokens({'pad_token': '</s>'})
+        # tokenizer.add_special_tokens({'pad_token': '</s>'})
 
         # initialize modules
         model = LlamaForCausalLM.from_pretrained(model_args.model_name_or_path, config=config)
     
     # convert normal model to bettertransformer
-    model = BetterTransformer.transform(model)
+    # model = BetterTransformer.transform(model)
 
     # Setup seed
     set_seed(training_args.seed)
@@ -166,7 +166,7 @@ def main():
     train_result = trainer.train()
 
     # convert bettertransformer to normal model
-    trainer.model = BetterTransformer.reverse(trainer.model)
+    # trainer.model = BetterTransformer.reverse(trainer.model)
     trainer.save_state()
 
     # save fp16 model under deepspeed zero2 or zero3
