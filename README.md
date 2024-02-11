@@ -89,13 +89,11 @@ Welcome to **ClosedAI-chatbot**. 해당 repo는 LangChain과 ChromaDB를 활용�
     ![ref arch](app/assets/interface.png)
 
 2. 대화 페이지
-    - **Chat!** 버튼을 누르면 대화를 할 수 있는 interface 가 생성됩니다. 
-    - "What is a contrastive learning" 질문을 입력하면 답변을 생성해줍니다.
-    - 밑에 관련 document 경로와 활용한 context를 보여줍니다.
-    ![ref arch](app/assets/chat.jpg)
+    - 질문을 입력하면 답변과 관련 context를 보여줍니다.
+   
+    ![ref arch](app/assets/interface1.png)
 
-3. 관련 문서 경로
-    - **Paper list"** 버튼을 누르면 관련된 문서의 경로와 위치를 보여줍니다.
-    - 왼쪽의 **Retrieval Setting"을 통해 문서의 개수와 최소 유사도의 값을 조절할 수 있습니다.
-    ![ref arch](app/assets/paperlist.jpg)
+3. 멀티 턴 대화 예시
+    
+    ![ref arch](app/assets/interface2.png)
 
