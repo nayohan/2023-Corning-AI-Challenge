@@ -17,17 +17,17 @@
 
 1. **LangChain's ArXiv Loader**: PaperDB에 대화에 필요한 문서를 기반으로 불러옵니다.
 2. **Chunking + Embedding**: LangChain을 사용하여 논문을 임의의 사이즈로 분할한 다음 임베딩을 생성합니다.
-3. **ChromaDB**: RAG를 위한 효율적인 벡터 저장, 인덱싱 및 검색을 시연합니다.
-4. **RetrievalQA**: LangChain의 Retrieval QA 및 Local LLM을 기반으로 사용자는 제출한 주제별로 검색된 논문에 대한 쿼리를 작성할 수 있습니다.
+3. **ChromaDB**: 문서는 벡터 형태로 DB에 저장되어, 인덱싱/검색을 시연합니다.
+4. **RetrievalQA**: 사용자의 질의를 임베딩하여, DB에서 해당 질의와 가장 유사한 문서를 LLM에 prompt 형식으로 전달합니다.
     
-    (1) Retrieval 모델
-       - 문서 임베딩을 위한 모델 : "BAAI/bge-base-en-v1.5"
+    (1) Retriever
+       - Search Engine : "BAAI/bge-base-en-v1.5"
 
             아래와 같은 흐름으로 Retrieval 모델을 활용하여 문서를 임베딩합니다.
         ![ref arch](app/assets/chunk.webp)
        ![ref arch](app/assets/fe2a8d84-2d2e-4e0f-b5a2-24e7b0bf33c7_image.webp)
         
-    (2) LLM 모델
+    (2) Generator
        - 화학 도메인에 학습한 LLM 모델 : "nayohan/corningQA-llama2-13b-chat"
        - 학습의 전체 프레임워크는 다음과 같습니다.
 
