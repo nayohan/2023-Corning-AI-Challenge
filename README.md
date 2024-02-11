@@ -27,16 +27,17 @@ Welcome to **ClosedAI-chatbot**. 해당 repo는 LangChain과 ChromaDB를 활용�
             아래와 같은 흐름으로 Retrieval 모델을 활용하여 문서를 임베딩합니다.
         ![ref arch](app/assets/chunk.webp)
        ![ref arch](app/assets/fe2a8d84-2d2e-4e0f-b5a2-24e7b0bf33c7_image.webp)
+        
     2) LLM 모델
        - 코닝 도메인에 학습한 LLM 모델 : "nayohan/closedai-llm"
             학습의 전체 프레임워크는 다음과 같습니다.
-        ![ref arch](app/assets/LLM_train.png)
+        <p align="center"><img width="800" alt="image" src="app/assets/LLM_train.png">
+
 
 
         - 궁극적으로 저희 모델은 단순한 QA보다는 상호간의 지속적인 대화가 가능한 QA 모델을 학습했습니다.
 
-
-        ![ref arch](app/assets/multi_turn.png)
+        <p align="center"><img width="800" alt="image" src="app/assets/multi_turn.png">
 
 
     
