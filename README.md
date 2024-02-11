@@ -46,7 +46,7 @@ Welcome to **ClosedAI-chatbot**. 해당 repo는 LangChain과 ChromaDB를 활용�
 
 1. First, clone this repo and cd into it.
     ```bash
-    $ https://github.com/CORNING-AI-CHALLENGE/team_closed_AI.git && cd team_closed_AI/app
+    $ git clone https://github.com/nayohan/2023-Corning-AI-Challenge
     ```
 
 2. Create your env file:
@@ -63,7 +63,6 @@ Welcome to **ClosedAI-chatbot**. 해당 repo는 LangChain과 ChromaDB를 활용�
 4. 대화 주제에 관련하여 필요한 문서를 해당 경로에 업로드 해줍니다. **(PDF/Word 지원)**
     ```bash
     $ PaperDB/*.pdf
-
     ```
 
 5. Run the app:
@@ -75,8 +74,8 @@ Welcome to **ClosedAI-chatbot**. 해당 repo는 LangChain과 ChromaDB를 활용�
     ```
     http://localhost:8501/
     ```
+    
 ### 활용 예시
-
 
 1. 시작 페이지
     - 토픽 주제에 대해 먼저 입력합니다.
