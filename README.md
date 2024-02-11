@@ -31,16 +31,16 @@
         
     (2) Generator
 
-      - 화학 도메인에 학습한 LLM 모델 : "nayohan/corningQA-llama2-13b-chat"
+      - LLM : "nayohan/corningQA-llama2-13b-chat"
       - 학습의 전체 프레임워크는 다음과 같습니다.
 
      <p align="center"><img width="500" alt="image" src="app/assets/LLM_train.png">
 
-      - ClosedAI-chatbot은 multi-turn dialogue를 지원합니다.
+      - 화학 도메인을 위해 학습한 ClosedAI-chatbot은 multi-turn dialogue를 지원합니다.
 
     <p align="center"><img width="500" alt="image" src="app/assets/multi_turn.png">
 
-5. **Python Libraries**: Making use of tools such as [`ChromaDB`], [`Langchain`](https://www.langchain.com/), [`Streamlit`](https://streamlit.io/), etc
+5. **Python Libraries**: Making use of tools such as [`ChromaDB`](), [`Langchain`](https://www.langchain.com/), [`Streamlit`](https://streamlit.io/), etc
 
 ### Run Locally
 
@@ -60,7 +60,7 @@
     $ pip install -r requirements.txt
     ```
 
-4. 대화 주제에 관련하여 필요한 문서를 해당 경로에 업로드 해줍니다. **(PDF/Word 지원)**
+4. 대화 주제에 관련하여 필요한 문서를 해당 경로에 업로드 해줍니다. **(pdf/docx 확장자 지원)**
     ```bash
     $ PaperDB/*.pdf
     ```
