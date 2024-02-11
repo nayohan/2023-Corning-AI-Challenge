@@ -86,14 +86,13 @@ Welcome to **ClosedAI-chatbot**. 해당 repo는 LangChain과 ChromaDB를 활용�
 1. 시작 페이지
     - 토픽 주제에 대해 먼저 입력합니다.
 
-    ![ref arch](app/assets/interface.png)
+   <p align="center"><img width="800" alt="image" src="app/assets/interface.png">
 
-2. 대화 페이지
+3. 대화 페이지
     - 질문을 입력하면 답변과 관련 context를 보여줍니다.
-   
-    ![ref arch](app/assets/interface1.png)
+   <p align="center"><img width="600" alt="image" src="app/assets/interface1.png">
 
-3. 멀티 턴 대화 예시
-    
-    ![ref arch](app/assets/interface2.png)
+4. 멀티 턴 대화 예시
+
+   <p align="center"><img width="600" alt="image" src="app/assets/interface2.png">
 
