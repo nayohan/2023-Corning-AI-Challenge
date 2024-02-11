@@ -21,15 +21,17 @@
 4. **RetrievalQA**: 사용자의 질의를 임베딩하여, DB에서 해당 질의와 가장 유사한 문서를 LLM에 prompt 형식으로 전달합니다.
     
     (1) Retriever
-       - Search Engine : "BAAI/bge-base-en-v1.5"
+       
+      - Search Engine : "BAAI/bge-base-en-v1.5"
 
             아래와 같은 흐름으로 Retrieval 모델을 활용하여 문서를 임베딩합니다.
         ![ref arch](app/assets/chunk.webp)
        ![ref arch](app/assets/fe2a8d84-2d2e-4e0f-b5a2-24e7b0bf33c7_image.webp)
         
     (2) Generator
-       - 화학 도메인에 학습한 LLM 모델 : "nayohan/corningQA-llama2-13b-chat"
-       - 학습의 전체 프레임워크는 다음과 같습니다.
+
+      - 화학 도메인에 학습한 LLM 모델 : "nayohan/corningQA-llama2-13b-chat"
+      - 학습의 전체 프레임워크는 다음과 같습니다.
 
        <p align="center"><img width="500" alt="image" src="app/assets/LLM_train.png">
 
