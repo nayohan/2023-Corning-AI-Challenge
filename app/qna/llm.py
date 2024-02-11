@@ -28,7 +28,10 @@ import transformers
 def get_llm(max_tokens=100) -> LLM:
     # llm = ChatOpenAI(model_name=OPENAI_COMPLETIONS_ENGINE, max_tokens=max_tokens)
     # llm = HuggingFaceHub(model_name="meta-llama/Llama-2-7b-chat-hf", max_tokens=max_tokens)
-    model_id = "nayohan/closedai-llm"
+    # model_id="meta-llama/Llama-2-13b-chat-hf"
+    # model_id="upstage/SOLAR-10.7B-v1.0"
+    model_id = "nayohan/corningQA-llama2-13b-chat"
+    model_id = "nayohan/corningQA-solar-10.7b-v1.0"
     # model_id = "mistralai/Mistral-7B-v0.1"
     # model_id = "gpt2"
     tokenizer = AutoTokenizer.from_pretrained(model_id)
@@ -61,7 +64,6 @@ def make_qna_chain(llm: LLM, vector_db: "Chroma", prompt: str = "", **kwargs):
         chain_type_kwargs={"prompt": prompt},
         verbose=True
     )
-
     # chain = load_qa_chain(llm, chain_type="stuff",verbose=True)
     return chain
 
@@ -101,7 +103,6 @@ def make_qna_chain(llm: LLM, vector_db: "Chroma", prompt: str = "", **kwargs):
 #         huggingfacehub_api_token="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"
 #     )
 #     return llm
-
 
 # def get_embeddings() -> Embeddings:
 #     embeddings = SentenceTransformerEmbeddings(model_name='all-MiniLM-L6-v2')

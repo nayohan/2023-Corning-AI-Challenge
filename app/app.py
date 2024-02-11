@@ -9,7 +9,8 @@ load_dotenv()
 
 if os.environ.get("QNA_DEBUG") == "true":
     langchain.debug = True
-
+os.environ["CUDA_DEVICE_ORDER"]="PCI_BUS_ID"  # Arrange GPU devices starting from 0
+os.environ["CUDA_VISIBLE_DEVICES"]= "0"
 from qna.llm import make_qna_chain, get_llm
 # from qna.db import get_cache, get_vectorstore
 from qna.db import get_vectorstore
@@ -73,7 +74,7 @@ try:
                 "text" : default_answer
             }]
         },
-        "question": default_question,
+        # "question": default_question,
         "context": [],
         "chain": None,
         "previous_topic": "",
@@ -108,63 +109,76 @@ try:
     col1, col2 = st.columns(2)
     with col1:
         st.title("CorningAI")
-        st.write("**")
         st.write("**Put in a topic area and a question within that area to get an answer!**")
-        topic = st.text_input("Topic Area", key="arxiv_topic")
-        papers = st.number_input("Number of Papers", key="num_papers", value=10, min_value=1, max_value=50, step=2)
+        # topic = st.text_input("Topic Area", key="arxiv_topic")
+        # papers = st.number_input("Number of Papers", key="num_papers", value=10, min_value=1, max_value=50, step=2)
     with col2:
         st.image("./assets/logo-glass-bg.png")
 
-    if st.button("Chat!"):
-        if is_updated(topic):
-            st.session_state['previous_topic'] = topic
-            with st.spinner("Loading information from Arxiv to answer your question..."):
-                create_arxiv_index(st.session_state['arxiv_topic'], st.session_state['num_papers'], prompt)
-                st.session_state["find_doc"] = False
+    # if st.button("Chat!"):
+    #     #if is_updated(topic):
+    #     # st.session_state['previous_topic'] = topic
+    #     with st.spinner("Loading information from Arxiv to answer your question..."):
+    #         # create_arxiv_index(st.session_state['arxiv_topic'], st.session_state['num_papers'], prompt)
+    #         st.session_state["find_doc"] = False
     
-    if st.button("Paper_list"):
-        if is_updated(topic):
-            st.session_state['previous_topic'] = topic
-            with st.spinner("Loading information from Arxiv to answer your question..."):
-                create_arxiv_index(st.session_state['arxiv_topic'], st.session_state['num_papers'], prompt)
-                st.session_state["find_doc"] = True
-
-    arxiv_db = st.session_state['arxiv_db']
-    if st.session_state["llm"] is None:
-        tokens = st.session_state["max_tokens"]
-        st.session_state["llm"] = get_llm(max_tokens=tokens)
-    try:
-        chain = make_qna_chain(
-            st.session_state["llm"],
-            arxiv_db,
-            prompt=prompt,
-            k=st.session_state['num_context_docs'],
-            search_type="similarity_distance_threshold",
-            distance_threshold=st.session_state["distance_threshold"]
-        )
-        st.session_state['chain'] = chain
-    except AttributeError:
-        st.info("Please enter a topic area")
-        st.stop()
+    # if st.button("Paper_list"):
+    #     # if is_updated(topic):
+    #     # st.session_state['previous_topic'] = topic
+    #     with st.spinner("Loading information from Arxiv to answer your question..."):
+    #         # create_arxiv_index(st.session_state['arxiv_topic'], st.session_state['num_papers'], prompt)
+    #         st.session_state["find_doc"] = True
 
     for message in st.session_state.messages:
         with st.chat_message(message["role"]):
             st.markdown(message["content"])
-
+    st.session_state['find_doc'] = False
     if query := st.chat_input("What do you want to know about this topic?"):
         st.session_state.messages.append({"role": "user", "content": query})
         with st.chat_message("user"):
             st.markdown(query)
-
+        topic = query
+        st.session_state['previous_topic'] = topic
+        papers = st.number_input("Number of Papers", key="num_papers", value=1, min_value=1, max_value=50, step=2)
+        create_arxiv_index(st.session_state['arxiv_topic'], st.session_state['num_papers'], prompt)
+        arxiv_db = st.session_state['arxiv_db']
+        if st.session_state["llm"] is None:
+            tokens = st.session_state["max_tokens"]
+            st.session_state["llm"] = get_llm(max_tokens=tokens)
+        try:
+            chain = make_qna_chain(
+                st.session_state["llm"],
+                arxiv_db,
+                prompt=prompt,
+                k=st.session_state['num_context_docs'],
+                search_type="similarity_distance_threshold",
+                distance_threshold=st.session_state["distance_threshold"]
+            )
+            st.session_state['chain'] = chain
+        except AttributeError:
+            st.info("Please enter a topic area")
+            st.stop()
         if st.session_state['find_doc'] == False:
             with st.chat_message("assistant", avatar="./assets/logo-glass-bg.png"):
                 message_placeholder = st.empty()
                 st.session_state['context'], st.session_state['response'] = [], ""
                 chain = st.session_state['chain']
-
-                # result = chain({"question": query, 'input_documents': arxiv_db})
-                result = chain({"query": query})
-                
+                try:
+                    # result = chain({"question": query, 'input_documents': arxiv_db})
+                    multi_turn_dialgoues = [f"Speaker 1: {message['content']}" if  idx%2==0 else f"Speaker 2: {message['content']}" for idx, message in enumerate(st.session_state.messages)]
+                    if len(multi_turn_dialgoues)%2==0: 
+                       last_dialogues = "\nSpeaker 1: ###\n"
+                    else:
+                        last_dialogues = "\nSpeaker 2: ###\n"
+                    dialogues  = '\n'.join(multi_turn_dialgoues).strip('\n') + last_dialogues
+                    result = chain({"query": dialogues})
+                    print('result:', result)
+                    
+                    # single-turn
+                    # result = chain({"query": dialogues})
+                except IndexError:
+                    st.info("해당 유사도 이상의 다큐먼트가 존재하지 않습니다.")
+                    st.stop()
                 st.markdown(result["result"])
                 # st.markdown(result)
                 st.session_state['context'], st.session_state['response'] = result['source_documents'], result['result']
@@ -195,7 +209,7 @@ try:
                         for i, doc_tuple in enumerate(context.items(), 1):
                             source, doc_list = doc_tuple[0], doc_tuple[1]
                             for i in range(len(doc_list)):
-                                st.write(f"{i}. **{doc_list[i].metadata['source'], doc_list[i].metadata['page']}**")
+                                st.write(f"**{doc_list[i].metadata['source'], doc_list[i].metadata['page']}**")
 
 except URLError as e:
     st.error(

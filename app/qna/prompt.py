@@ -11,10 +11,9 @@ def basic_prompt():
     ```
     Dialogue Session:
     {question}
-    
     ```
     Task Introduction:
-    After reading the entire Dialogue Session, please create an appropriate response.
+    After reading the Dialogue Session, please create an appropriate response in the parts marked ###.
     ```
     
     Task Result:
@@ -25,3 +24,7 @@ def basic_prompt():
         input_variables=["context", "question"],
     )
     return prompt
+
+
+    # Speaker 1: {question}
+    # Speaker 2: ###

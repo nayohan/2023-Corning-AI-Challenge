@@ -24,8 +24,6 @@ from qna.llm import get_embeddings
         # )
     # return None
 
-
-
 def get_vectorstore(documents: List[Document]=None) -> "Chroma":
     """Create the Redis vectorstore."""
 
