@@ -24,7 +24,8 @@
        
       - Search Engine : "BAAI/bge-base-en-v1.5"
 
-            아래와 같은 흐름으로 Retrieval 모델을 활용하여 문서를 임베딩합니다.
+        아래와 같은 흐름으로 Retrieval 모델을 활용하여 문서를 임베딩합니다.
+
         ![ref arch](app/assets/chunk.webp)
        ![ref arch](app/assets/fe2a8d84-2d2e-4e0f-b5a2-24e7b0bf33c7_image.webp)
         
@@ -33,11 +34,11 @@
       - 화학 도메인에 학습한 LLM 모델 : "nayohan/corningQA-llama2-13b-chat"
       - 학습의 전체 프레임워크는 다음과 같습니다.
 
-       <p align="center"><img width="500" alt="image" src="app/assets/LLM_train.png">
+     <p align="center"><img width="500" alt="image" src="app/assets/LLM_train.png">
 
-        - ClosedAI-chatbot은 multi-turn dialogue를 지원합니다.
+      - ClosedAI-chatbot은 multi-turn dialogue를 지원합니다.
 
-        <p align="center"><img width="500" alt="image" src="app/assets/multi_turn.png">
+    <p align="center"><img width="500" alt="image" src="app/assets/multi_turn.png">
 
 5. **Python Libraries**: Making use of tools such as [`ChromaDB`], [`Langchain`](https://www.langchain.com/), [`Streamlit`](https://streamlit.io/), etc
 
