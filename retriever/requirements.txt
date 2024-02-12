@@ -1,4 +1,6 @@
-torch==1.12.1+cu116
+jsonlines
+pytorch-ignite
 transformers
-simcse
-datasets
+sentence-transformers
+torch_optimizer
+pandas
