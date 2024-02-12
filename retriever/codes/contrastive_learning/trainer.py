@@ -79,18 +79,6 @@ class CL(Engine):
         
         loss = engine.criterion(cos_sim, labels)
             
-        if engine.args.do_mlm:
-            mlm_output, mlm_labels = mini_batch['masked_input_ids'].to(engine.device), mini_batch['masked_input_ids_label'].to(engine.device)
-            if engine.args.fp16:
-                with autocast():
-                    m_documents = engine.model(mlm_output, attention_mask, output_hidden_states=True, return_dict=None)
-            else:
-                m_documents = engine.model(mlm_output, attention_mask, output_hidden_states=True, return_dict=None)
-            
-            prediction_scores = engine.lm_head(m_documents.last_hidden_state)
-            masked_lm_loss = engine.criterion(prediction_scores.view(-1, engine.config.vocab_size), mlm_labels.view(-1))
-            loss += engine.args.mlm_weight * masked_lm_loss
-        
         engine.scaler.scale(loss).backward()
         engine.scaler.step(engine.optimizer)
         engine.scaler.update()

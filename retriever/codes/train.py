@@ -42,14 +42,11 @@ def define_argparser():
                                     choices=["cls", "cls_before_pooler", "avg", "avg_top2", "avg_first_last"], 
                                     default='cls')
     
-    p.add_argument('--temp', type=float, default=0.06949)
+    p.add_argument('--temp', type=float, default=0.05)
     p.add_argument('--adam_epsilon', type=float, default=1e-8)
     p.add_argument('--warmup_ratio', type=float, default=0)
     
-    p.add_argument('--mlm_weight', type=float, default=0.1)
-
     p.add_argument('--seed', type=int, default=42)
-    p.add_argument('--do_mlm', action='store_true')
     p.add_argument('--fp16', action='store_true')
     p.add_argument('--max_length', type=int, default=64)    
     
