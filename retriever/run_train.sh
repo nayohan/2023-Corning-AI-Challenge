@@ -2,7 +2,7 @@ MODEL_PATH=''
 TRAIN_PATH=''
 EVAL_PATH=''
 
-python main.py \
+python codes/train.py \
     --output_path ./codes/result/model.pt \
     --train_fn ${TRAIN_PATH} \
     --valid_fn ${EVAL_PATH} \
