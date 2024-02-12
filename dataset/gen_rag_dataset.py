@@ -110,7 +110,7 @@ def main(args):
                             mode=args.chunk_mode, 
                             extension=args.extension
                             ).get_docs()
-    chunked_docs = [doc for doc in chunked_docs if len(doc) >= args.doc_length]        
+        chunked_docs = [doc for doc in chunked_docs if len(doc) >= args.doc_length]        
     idx = 0
     context, query, answer = [], [], []
     
