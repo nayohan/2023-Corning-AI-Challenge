@@ -64,10 +64,10 @@ class Chunking():
             docs = text_splitter.split_documents(origin_docs)
             docs = [doc.page_content for doc in docs]
         
-        # elif self.mode == 'spacy':
-        #     text_splitter = SpacyTextSplitter()
-        #     documents = text_splitter.split_documents(raw_documents)
-        #     documents = [doc.page_content for doc in documents]
+        elif self.mode == 'spacy':
+            text_splitter = SpacyTextSplitter()
+            documents = text_splitter.split_documents(raw_documents)
+            documents = [doc.page_content for doc in documents]
         
         elif self.mode == 'markdown':
             text_splitter = MarkdownTextSplitter(chunk_size=self.chunk_size, 
