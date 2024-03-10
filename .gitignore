@@ -3,3 +3,6 @@ __pycache__
 dataset_gen
 
 *.pyc
+
+*venv*
+wandb
