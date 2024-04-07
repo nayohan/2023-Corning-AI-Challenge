@@ -31,7 +31,7 @@
         
     (2) Generator
 
-      - LLM : "nayohan/corningQA-llama2-13b-chat"
+      - LLM : ["nayohan/corningQA-llama2-13b-chat"](https://huggingface.co/nayohan/corningQA-llama2-13b-chat) / [nayohan/corningQA-solar-10.7b-v1.0](https://huggingface.co/nayohan/corningQA-solar-10.7b-v1.0)
       - 학습의 전체 프레임워크는 다음과 같습니다.
 
      <p align="center"><img width="500" alt="image" src="app/assets/LLM_train.png">
